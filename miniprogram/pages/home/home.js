@@ -1,6 +1,6 @@
 const api=require('../../utils/api');
 Page({
- data:{name:'',gender:'不公开',mode:'couple',capacity:2,roomCode:'',avatar:'',inviteCount:0,matching:false,genders:[{value:'女',label:'女',icon:'♀'},{value:'男',label:'男',icon:'♂'},{value:'不公开',label:'不公开',icon:'🐻'}]},
+ data:{name:'',gender:'不公开',mode:'challenge',capacity:2,roomCode:'',avatar:'',inviteCount:0,matching:false,genders:[{value:'女',label:'女',icon:'♀'},{value:'男',label:'男',icon:'♂'},{value:'不公开',label:'不公开',icon:'🐻'}]},
  onLoad(){this.setData({name:wx.getStorageSync('name')||'',gender:wx.getStorageSync('gender')||'不公开',avatar:wx.getStorageSync('avatar')||''});},
  onShow(){if(this.data.matching)this.pollMatch();this.refreshSocial();this.socialTimer=setInterval(()=>this.refreshSocial(),3000);},
  onHide(){clearInterval(this.socialTimer);},

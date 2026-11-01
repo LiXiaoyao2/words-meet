@@ -1,6 +1,6 @@
 {
   "pages": ["pages/home/home", "pages/game/game", "pages/friends/friends", "pages/ranking/ranking"],
-  "window": {"navigationBarTitleText": "心动相遇", "navigationBarBackgroundColor": "#fff5f7", "navigationBarTextStyle": "black", "backgroundColor": "#fff8f7"},
+  "window": {"navigationBarTitleText": "默契挑战", "navigationBarBackgroundColor": "#fff5f7", "navigationBarTextStyle": "black", "backgroundColor": "#fff8f7"},
   "style": "v2",
   "sitemapLocation": "sitemap.json"
 }
