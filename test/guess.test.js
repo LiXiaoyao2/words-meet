@@ -21,6 +21,7 @@ test('猜词保密、语义分数、共享排行及 30 次失败', {timeout:3000
     const [,fruit]=await post('guess',{code:room.code,token:room.token,word:'香蕉'});
     const [,plane]=await post('guess',{code:room.code,token:room.token,word:'飞机'});
     assert.ok(fruit.guess.latest.score>plane.guess.latest.score);
+    assert.notEqual(fruit.guess.latest.score,Math.round(fruit.guess.latest.score*100)/100);
     assert.equal((await post('guess',{code:room.code,token:room.token,word:'香蕉'}))[0],400);
     const [,win]=await post('guess',{code:room.code,token:room.token,word:'苹果'});
     assert.equal(win.won,true);assert.equal(win.guess.latest.score,100);assert.equal(win.guess.answer,'苹果');

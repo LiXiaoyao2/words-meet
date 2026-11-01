@@ -15,6 +15,6 @@ async function embed(text) {
 }
 function similarity(x, y) {
   const cosine = x.reduce((sum,n,i)=>sum+n*y[i],0);
-  return Math.round(Math.max(0,Math.min(0.9999,cosine))*10000)/100;
+  return Math.round(Math.max(0,Math.min(0.99999999,cosine))*100000000)/1000000;
 }
 module.exports={model,embed,similarity};
