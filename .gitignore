@@ -6,3 +6,6 @@
 node_modules/
 .DS_Store
 miniprogram/project.private.config.json
+
+# Local semantic model (download with scripts/download-model.sh)
+/models/
