@@ -7,7 +7,7 @@ const net = require('node:net');
 const {spawn} = require('node:child_process');
 const root = path.resolve(__dirname, '..');
 async function freePort() { return new Promise((resolve, reject) => {const server = net.createServer();server.once('error',reject);server.listen(0,'127.0.0.1',()=>{const port=server.address().port;server.close(()=>resolve(port));});}); }
-test('猜词保密、语义分数、共享排行及 30 次失败', {timeout:30000}, async () => {
+test('猜词保密、语义分数、共享排行及 100 次失败', {timeout:30000}, async () => {
   const dir=fs.mkdtempSync(path.join(os.tmpdir(),'words-guess-test-'));
   for(const file of ['server.js','semantic.js','sensitive-words.json'])fs.copyFileSync(path.join(root,file),path.join(dir,file));
   fs.writeFileSync(path.join(dir,'guess-words.json'),JSON.stringify(['苹果']));
@@ -26,8 +26,8 @@ test('猜词保密、语义分数、共享排行及 30 次失败', {timeout:3000
     const [,win]=await post('guess',{code:room.code,token:room.token,word:'苹果'});
     assert.equal(win.won,true);assert.equal(win.guess.latest.score,100);assert.equal(win.guess.answer,'苹果');
     const [,second]=await post('create',{name:'测试二',mode:'guess',capacity:1});let result;
-    for(let i=0;i<30;i++)[,result]=await post('guess',{code:second.code,token:second.token,word:'编号'+i});
-    assert.equal(result.failed,true);assert.equal(result.guess.count,30);assert.equal(result.guess.top.length,20);
+    for(let i=0;i<100;i++)[,result]=await post('guess',{code:second.code,token:second.token,word:'编号'+i});
+    assert.equal(result.failed,true);assert.equal(result.guess.count,100);assert.equal(result.guess.top.length,20);
     assert.equal((await post('guess',{code:second.code,token:second.token,word:'多一次'}))[0],400);
     const tickets=[];for(let i=0;i<4;i++)tickets.push((await post('match',{name:'队员'+i,mode:'guess',capacity:4}))[1]);
     const states=[];for(const ticket of tickets)states.push((await post('match-status',ticket))[1]);
