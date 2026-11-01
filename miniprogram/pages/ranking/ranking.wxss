@@ -1,0 +1,1 @@
+.item{display:flex;align-items:center;gap:18rpx;border-bottom:1rpx solid #f4e8ea;padding:18rpx 0;font-size:26rpx}.number{width:40rpx;color:#ce8ca0;font-weight:700;font-size:30rpx}.empty,.rules{margin-top:20rpx}

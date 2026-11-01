@@ -1,0 +1,8 @@
+# Local player identities, friend relationships, and chat history
+/friends.json
+/friends.json.tmp
+# Local runtime / developer configuration
+*.log
+node_modules/
+.DS_Store
+miniprogram/project.private.config.json

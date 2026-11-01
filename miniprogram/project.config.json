@@ -1,0 +1,9 @@
+{
+  "description": "心动相遇微信小程序",
+  "miniprogramRoot": "./",
+  "compileType": "miniprogram",
+  "appid": "touristappid",
+  "projectname": "words-meet",
+  "libVersion": "2.20.1",
+  "setting": {"urlCheck": false, "es6": true, "minified": true}
+}

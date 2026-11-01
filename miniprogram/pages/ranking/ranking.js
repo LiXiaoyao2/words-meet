@@ -1,0 +1,2 @@
+const api=require('../../utils/api');
+Page({data:{ranking:[]},async onShow(){try{const friendToken=await api.ensureIdentity(wx.getStorageSync('name'));const result=await api.request('ranking',{friendToken});this.setData({ranking:result.ranking});}catch(e){api.error(e);}},async profile(e){try{const p=await api.request('player-profile',{friendToken:getApp().globalData.friendToken,code:e.currentTarget.dataset.code});wx.showModal({title:p.name,content:`${p.rank} · ${p.points} 积分\n${p.games} 场 · ${p.wins} 胜 · 胜率 ${p.winRate}%`,showCancel:false});}catch(err){api.error(err);}}});

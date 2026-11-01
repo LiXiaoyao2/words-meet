@@ -1,0 +1,15 @@
+const api=require('../../utils/api');
+const words=require('../../utils/words.json');
+Page({
+ data:{state:{players:[],history:[],capacity:2},word:'',lastWords:[],winningWord:'',round:1,error:'',danmakuOpen:false,danmaku:'',overlay:''},
+ onLoad(){this.session=getApp().globalData.session;this.cursor=0;this.initial=true;this.poll();this.timer=setInterval(()=>this.poll(),1500);},
+ onUnload(){clearInterval(this.timer);clearTimeout(this.overlayTimer);if(this.session&&!this.leaving){api.request('leave',this.session).catch(()=>{});wx.removeStorageSync('session');getApp().globalData.session=null;}},
+ async poll(){if(!this.session||this.polling)return;this.polling=true;try{this.render(await api.state(this.session));}catch(e){this.setData({error:e.message});}finally{this.polling=false;}},
+ render(s){const events=s.events||[];if(this.initial){this.cursor=events.length?events[events.length-1].id:0;this.initial=false;}else for(const event of events){if(event.id>this.cursor){this.cursor=event.id;if(event.type==='danmaku')this.showOverlay(event.name+'：'+event.message);else if(event.type==='join')this.showOverlay(event.name+' 加入了房间 ✨');}}const prev=this.data.state;const newRound=prev.history&&prev.history.length!==s.history.length;this.setData({state:s,lastWords:s.history.length?s.history[s.history.length-1]:[],winningWord:s.won?s.history[s.history.length-1][0]:'',round:s.history.length+1,...(newRound?{word:'',error:''}:{})});if(s.won&&!prev.won){wx.vibrateShort({type:'medium',fail(){}});this.showOverlay('🎉 恭喜，大家想到一起啦！');}},
+ showOverlay(text){clearTimeout(this.overlayTimer);this.setData({overlay:text});this.overlayTimer=setTimeout(()=>this.setData({overlay:''}),4500);},onWord(e){this.setData({word:e.detail.value});},onDanmaku(e){this.setData({danmaku:e.detail.value});},roll(){let choices=words.filter(x=>x!==this.data.word);this.setData({word:choices[Math.floor(Math.random()*choices.length)]});},
+ async submit(){if(this.sending)return;this.sending=true;try{const s=await api.request('word',{...this.session,word:this.data.word});this.setData({error:''});this.render(s);}catch(e){this.setData({error:e.message});}finally{this.sending=false;}},
+ async reset(){try{this.render(await api.request('reset',this.session));}catch(e){api.error(e);}},
+ async leave(){if(this.leaving)return;this.leaving=true;try{await api.request('leave',this.session);this.session=null;getApp().globalData.session=null;wx.removeStorageSync('session');wx.navigateBack({delta:1});}catch(e){this.leaving=false;api.error(e);}},
+ toggleDanmaku(){this.setData({danmakuOpen:!this.data.danmakuOpen});},async sendDanmaku(){try{const result=await api.request('danmaku',{...this.session,message:this.data.danmaku});this.setData({danmaku:'',danmakuOpen:false});this.render(result);}catch(e){api.error(e);}},
+ async showProfile(e){const code=e.currentTarget.dataset.code;if(!code)return;try{const p=await api.request('player-profile',{friendToken:getApp().globalData.friendToken,code});wx.showModal({title:p.name,content:`${p.rank} · ${p.points} 积分\n${p.games} 场 · ${p.wins} 胜 · 胜率 ${p.winRate}%`,showCancel:false});}catch(err){api.error(err);}}
+});
