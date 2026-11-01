@@ -23,6 +23,7 @@ test('猜词保密、语义分数、共享排行及 100 次失败', {timeout:300
     assert.ok(fruit.guess.latest.score>plane.guess.latest.score);
     assert.notEqual(fruit.guess.latest.score,Math.round(fruit.guess.latest.score*100)/100);
     assert.equal((await post('guess',{code:room.code,token:room.token,word:'香蕉'}))[0],400);
+    const [,hintRoom]=await post('create',{name:'提示测试',mode:'guess',capacity:1});let hintState;for(let i=0;i<10;i++)[,hintState]=await post('guess',{code:hintRoom.code,token:hintRoom.token,word:'提示'+i});assert.equal(hintState.guess.hints.length,1);assert.match(hintState.guess.hints[0].text,/长度/);
     const [,win]=await post('guess',{code:room.code,token:room.token,word:'苹果'});
     assert.equal(win.won,true);assert.equal(win.guess.latest.score,100);assert.equal(win.guess.answer,'苹果');
     const [,second]=await post('create',{name:'测试二',mode:'guess',capacity:1});let result;
