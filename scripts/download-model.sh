@@ -1,9 +1,9 @@
 #!/bin/sh
 set -eu
 root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
-dest="$root/models/paraphrase-multilingual-MiniLM-L12-v2"
-revision=2c4055b12046f11709e9df2c122e59ffbdc2f900
-base="https://huggingface.co/Xenova/paraphrase-multilingual-MiniLM-L12-v2/resolve/$revision"
+dest="$root/models/bge-small-zh-v1.5"
+revision=75c43b069aac4d136ba6bc1122f995fedcfd2781
+base="https://huggingface.co/Xenova/bge-small-zh-v1.5/resolve/$revision"
 mkdir -p "$dest/onnx"
 fetch() {
   file=$1 expected=$2
@@ -15,8 +15,8 @@ fetch() {
   if ! printf '%s  %s\n' "$expected" "$dest/$file.part" | sha256sum -c -; then rm -f "$dest/$file.part"; return 1; fi
   mv "$dest/$file.part" "$dest/$file"
 }
-fetch config.json 05b570bff786faa5c4604152aa16f19f77ed6dfc31e47dd0f3dd987078693ac7
-fetch special_tokens_map.json 06e405a36dfe4b9604f484f6a1e619af1a7f7d09e34a8555eb0b77b66318067f
-fetch tokenizer.json b60b6b43406a48bf3638526314f3d232d97058bc93472ff2de930d43686fa441
-fetch tokenizer_config.json 3f5961b9ac86288cccdb97f32fb848d6187c78e1603958c53f3ea1f296b7d8a2
-fetch onnx/model_quantized.onnx 66fc00f5f29afcaff34092e1bdd20008ca3918265a82fb9695a551e510cc4ebc
+fetch config.json d4193ead3a810fd694fa8a31d7fc72fbaebc0668b603e398734bf2f6538ff42f
+fetch special_tokens_map.json b6d346be366a7d1d48332dbc9fdf3bf8960b5d879522b7799ddba59e76237ee3
+fetch tokenizer.json 48cea5d44424912a6fd1ea647bf4fe50b55ab8b1e5879c3275f80e339e8fae26
+fetch tokenizer_config.json e6f3b96db926a37d4039995fbf5ad17de158dfb8f6343d607e4dbaad18d75f5a
+fetch onnx/model_quantized.onnx 15b717c382bcb518ba457b93ea6850ede7f4f1cd8937454aa06972366cd19bcc
