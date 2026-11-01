@@ -2,10 +2,11 @@ const http = require('http');
 const fs = require('fs');
 const crypto = require('crypto');
 const semantic = require('./semantic');
+const { pinyin } = require('pinyin-pro');
 const guessWords = JSON.parse(fs.readFileSync(__dirname+'/guess-words.json','utf8'));
 const verbHints=new Set('奔跑跳跃飞翔游泳睡觉做梦微笑拥抱牵手相遇分享等待思念想象学习阅读唱歌跳舞种植烹饪探索发现创造'.split(''));
 const adjectiveHints=new Set('勇敢温柔快乐幸福好奇惊喜安静热闹明亮温暖自由甜蜜轻松神秘希望'.split(''));
-function guessHints(answer,count){const hints=[];if(count>=10)hints.push({type:'length',text:`长度：${[...answer].length} 个字`});if(count>=20){const pos=verbHints.has(answer[0])?'动词':adjectiveHints.has(answer[0])?'形容词':'名词';hints.push({type:'pos',text:`词性：${pos}`})}if(count>=30)hints.push({type:'first',text:`首字：${[...answer][0]}`});if(count>=50)hints.push({type:'last',text:`末字：${[...answer].at(-1)}`});return hints}
+function guessHints(answer,count){const hints=[];if(count>=10)hints.push({type:'length',text:`长度：${[...answer].length} 个字`});if(count>=20){const pos=verbHints.has(answer[0])?'动词':adjectiveHints.has(answer[0])?'形容词':'名词';hints.push({type:'pos',text:`词性：${pos}`})}if(count>=30)hints.push({type:'initial-pinyin',text:`首字拼音：${pinyin([...answer][0],{toneType:'none'})}`});if(count>=40)hints.push({type:'first',text:`首字：${[...answer][0]}`});if(count>=50)hints.push({type:'last',text:`末字：${[...answer].at(-1)}`});return hints}
 function makeGuess(previous) {const choices=guessWords.filter(w=>w!==previous);return {answer:choices[crypto.randomInt(choices.length)],guesses:[],locked:false,vector:null};}
 const rooms = new Map();
 const tickets = new Map();
