@@ -20,4 +20,4 @@ npm start
 
 相似度由本机的 [中文优化的 BGE-small-zh-v1.5 模型](https://huggingface.co/Xenova/bge-small-zh-v1.5)计算余弦相似度并换算为百分数，负值按 0% 显示，保留小数点后 6 位，非完全一致最高显示 99.999999%；这不是猜中概率，也可能出现不符合直觉的分数。目标词与所有模型运算均留在服务器本机。
 
-微信小程序客户端位于 [miniprogram](miniprogram/README.md)；猜词模式目前只在网页版提供。玩家身份、好友和战绩保存在本地 `friends.json`，包含私人数据，已排除在 Git 之外；需要迁移或备份时请单独妥善保管。敏感词表由 `sensitive-words.json` 维护，简单词库不能保证识别所有变体。
+玩家身份、好友和战绩保存在本地 `friends.json`，包含私人数据，已排除在 Git 之外；需要迁移或备份时请单独妥善保管。敏感词表由 `sensitive-words.json` 维护，简单词库不能保证识别所有变体。
